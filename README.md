@@ -134,7 +134,7 @@ Como las rutas usan `HashRouter`, funcionan en cualquier dispositivo sin ajustes
 ## Proceso con IA y pruebas de usabilidad
 
 - Registro de prompts y decisiones: [`docs/PROMPTS.md`](docs/PROMPTS.md).
-- Pruebas de usabilidad: qué se probó hasta ahora y qué falta, en [`docs/USABILIDAD.md`](docs/USABILIDAD.md).
+- Prueba de usabilidad con 4 personas (2 en celular y 2 en compu) y los ajustes que se hicieron: [`docs/USABILIDAD.md`](docs/USABILIDAD.md).
 
 ## Limitaciones conocidas
 

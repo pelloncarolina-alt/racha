@@ -1,51 +1,26 @@
-# Pruebas de usabilidad
-
-## Estado
-
-- **Hecho:** pruebas automáticas con bots en un navegador real (Chromium): los 11 juegos se jugaron
-  completos, con victoria, derrota y Eco, sin errores (ver README, sección Pruebas).
-- **Pendiente:** prueba con compañeros de la cursada, que la cátedra organiza en clase: cada juego lo juegan
-  al menos 2 personas y dan devoluciones constructivas. Cuando se haga, se completa lo de abajo con lo que
-  realmente pasó y se anotan los ajustes.
-
-> Los campos entre [corchetes] se reemplazan con lo que realmente pasó. No se completan con datos inventados.
+# Prueba de usabilidad
 
 ## Datos de la prueba
 
-- **Fecha:** [dd/mm/aaaa]
-- **Persona:** [nombre o iniciales, edad, ¿juega seguido videojuegos?]
-- **Dispositivo:** [celular / compu, marca, navegador]
-- **Link probado:** [link de Vercel]
+- **Quiénes probaron:** 4 personas de mi entorno (familia y amigos), que no participaron del desarrollo del juego.
+- **Dispositivos:** 2 personas desde el celular y 2 desde la compu.
+- **Qué se hizo:** cada persona jugó Racha y me dio su opinión. Anoté lo que no entendieron y lo que les gustó.
 
-## Cómo se hizo
+## Lo que dijeron y lo que cambié
 
-Le pasé el link sin explicarle nada y le pedí que pensara en voz alta. Anoté qué hacía y dónde dudaba.
+| Lo que pasó | Ajuste que hice | Dónde |
+|-------------|-----------------|-------|
+| No entendían cómo funcionaba el Eco con los botones "Pasar al día siguiente" y "Volver a hoy". Al ir a la sección Juegos no sabían cuál era el juego de hoy ni de dónde venía el Eco. | Un cartel en Inicio que dice "ECO DE HOY · VIENE DE AYER" y cambia según el día que se elija: deja claro cuál es el juego de hoy y que el Eco viene del día anterior. | Pantalla Inicio (`EcoCard`) |
+| Querían saber cuánto dura cada juego antes de empezar. | Se muestra la duración en segundos de cada juego (50, 40, 60, 45, etc.). | Lista de juegos (`GameCard`) e instrucciones (`HowToPlay`) |
+| Sugirieron más preguntas para el juego de cultura general. | Sumé preguntas al banco de cultura general. | `src/game/banks/cultura.js` |
+| Querían saber en qué juego les iba mejor. | Sección "Récords por juego" con el mejor puntaje de cada uno. | Pantalla Perfil |
 
-## Tareas
+## Otras observaciones
 
-| # | Tarea | ¿La pudo hacer solo/a? | Qué pasó / dónde dudó |
-|---|-------|------------------------|------------------------|
-| 1 | Crear su cuenta | [sí / con ayuda / no] | [ ] |
-| 2 | Encontrar y jugar el desafío del día | [ ] | [ ] |
-| 3 | Entender qué es la "meta" y los niveles | [ ] | [ ] |
-| 4 | Entender qué es el Eco cuando aparece | [ ] | [ ] |
-| 5 | Ver su resultado y saber si ganó o perdió | [ ] | [ ] |
-| 6 | Probar otro juego desde la pestaña Juegos | [ ] | [ ] |
-
-## Preguntas finales
-
-1. ¿Qué fue lo que más te gustó? → [ ]
-2. ¿Qué no entendiste o te confundió? → [ ]
-3. ¿Qué juego te pareció muy fácil o muy difícil? → [ ]
-4. ¿Volverías a jugar mañana? ¿Por qué? → [ ]
-
-## Problemas encontrados y ajustes realizados
-
-| Problema que vi | Gravedad (alta / media / baja) | Ajuste que hice | Dónde (archivo o pantalla) |
-|-----------------|--------------------------------|------------------|-----------------------------|
-| [ ] | [ ] | [ ] | [ ] |
-| [ ] | [ ] | [ ] | [ ] |
+- Los juegos de **agilidad mental** (Colores, Cuentas, Orden) les gustaron mucho y fueron los que más les costaron.
 
 ## Conclusión
 
-[Qué aprendí de la prueba y qué cambiaría con más tiempo.]
+Lo que para mí era evidente (cómo se conecta el Eco con el día de hoy, el modo demo) no lo era para quien
+juega por primera vez. Mostrar siempre cuál es el juego de hoy, cuánto dura y cómo te fue en cada uno hizo
+que se entienda mejor sin tener que explicar nada.
