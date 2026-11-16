@@ -6,7 +6,8 @@ const STORAGE_KEY = 'racha_user'
 export function loadUser() {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : null
+    // `bests` (récord por juego) no existía en las cuentas viejas: se completa al leer
+    return raw ? { bests: {}, ecos: 0, ...JSON.parse(raw) } : null
   } catch {
     return null
   }
@@ -36,6 +37,8 @@ export function createUser({ username, email, avatar }) {
     avatar,
     streak: 0,
     bestScore: 0,
+    bests: {}, // mejor puntaje por juego: { punteria: 1200, ... }
+    ecos: 0, // Ecos cerrados
     played: 0,
     history: [], // días en los que completó el desafío
   }
@@ -46,7 +49,7 @@ export function hasPlayedToday(user) {
 }
 
 // Registra un desafío completado: actualiza racha, mejor puntaje e historial
-export function registerResult(user, score) {
+export function registerResult(user, score, gameId) {
   const today = dateKey()
   const yesterday = daysAgoKey(1)
   const alreadyToday = user.history.includes(today)
@@ -60,7 +63,23 @@ export function registerResult(user, score) {
     ...user,
     streak,
     bestScore: Math.max(user.bestScore, score),
+    bests: withBest(user.bests, gameId, score),
     played: user.played + 1,
     history: alreadyToday ? user.history : [...user.history, today],
   }
+}
+
+// Partida de práctica (cualquier juego fuera del desafío del día): no toca la racha
+export function registerPractice(user, gameId, score) {
+  return {
+    ...user,
+    bestScore: Math.max(user.bestScore, score),
+    bests: withBest(user.bests, gameId, score),
+    played: user.played + 1,
+  }
+}
+
+function withBest(bests = {}, gameId, score) {
+  if (!gameId) return bests
+  return { ...bests, [gameId]: Math.max(bests[gameId] || 0, score) }
 }

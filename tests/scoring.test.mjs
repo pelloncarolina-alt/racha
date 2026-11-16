@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { gradeTap, multiplierFor, pointsFor, approachMs, buildRanking } from '../src/game/scoring.js'
+import { gradeTap, multiplierFor, pointsFor, approachMs, gapRange, buildRanking } from '../src/game/scoring.js'
 
 // Precisión
 assert.equal(gradeTap(0), 'perfect')
@@ -29,10 +29,10 @@ assert.equal(pointsFor('perfect', 12), 300)
 assert.equal(pointsFor('early', 12), 0)
 
 // Velocidad
-assert.equal(approachMs(0), 1500)
-assert.equal(approachMs(45000), 850)
-assert.ok(approachMs(22500) < 1500 && approachMs(22500) > 850)
-assert.equal(approachMs(99999), 850)
+assert.equal(approachMs(1), 1500)
+assert.equal(approachMs(5), 720)
+for (let l = 1; l < 5; l++) assert.ok(approachMs(l + 1) < approachMs(l), 'cada nivel es más rápido')
+assert.ok(gapRange(5).max < gapRange(1).max, 'las pausas también se achican')
 
 // Ranking
 const friends = [{ name: 'a', score: 4250 }, { name: 'b', score: 890 }, { name: 'c', score: 120 }]

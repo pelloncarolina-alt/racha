@@ -1,9 +1,10 @@
 import { Link, useLocation } from 'react-router-dom'
 
 const ITEMS = [
-  { to: '/inicio', icon: '🏠', label: 'HOME', also: ['/resultados'] },
-  { to: '/amigos', icon: '👥', label: 'FRIENDS', also: [] },
-  { to: '/perfil', icon: '👤', label: 'PROFILE', also: [] },
+  { to: '/inicio', icon: '🏠', label: 'INICIO', also: ['/resultados'] },
+  { to: '/juegos', icon: '🎮', label: 'JUEGOS', also: [] },
+  { to: '/amigos', icon: '👥', label: 'AMIGOS', also: [] },
+  { to: '/perfil', icon: '👤', label: 'PERFIL', also: [] },
 ]
 
 function BottomNav() {

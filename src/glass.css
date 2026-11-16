@@ -1,0 +1,373 @@
+/* =========================================================
+   Pulido visual de Racha: glassmorfismo, brillos y animaciones.
+   Se carga al final, así que ajusta el aspecto de los componentes sin tocar su estructura.
+   ========================================================= */
+
+:root {
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --glass-blur: blur(16px) saturate(150%);
+}
+
+/* ---------- Fondo con luces de color (para que se note el vidrio) ---------- */
+body {
+  background:
+    radial-gradient(60vmax 60vmax at 8% -5%, rgba(179, 157, 255, 0.28), transparent 60%),
+    radial-gradient(55vmax 55vmax at 105% 105%, rgba(125, 227, 255, 0.2), transparent 60%),
+    radial-gradient(40vmax 40vmax at 100% 35%, rgba(255, 122, 168, 0.1), transparent 60%),
+    #0b0b12;
+  background-attachment: fixed;
+}
+.app {
+  background: transparent;
+}
+
+/* ---------- Superficies de vidrio ---------- */
+.challenge-card,
+.eco-card-content,
+.game-card,
+.demo-box,
+.score-card,
+.result-stat,
+.ranking-row,
+.friend-item,
+.records-item,
+.game-hud-stats,
+.qz-prompt,
+.math-text,
+.color-word,
+.streak-banner,
+.home-more,
+.demo-chip,
+.profile-stat,
+.stat-card,
+.activity-grid {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.ranking-row-player {
+  border-left: 4px solid var(--violet);
+  background: linear-gradient(135deg, rgba(179, 157, 255, 0.22), rgba(179, 157, 255, 0.06));
+}
+.qz-option,
+.color-option,
+.ord-num,
+.mem-card:not(.mem-up),
+.mole-hole {
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.qz-option,
+.color-option,
+.ord-num {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+.pt-field {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(125, 227, 255, 0.08), transparent 65%),
+    rgba(255, 255, 255, 0.04);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Cabecera y barra inferior de vidrio */
+.header,
+.bottom-nav {
+  background: rgba(13, 13, 20, 0.55);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.header { position: sticky; top: 0; z-index: 20; }
+.bottom-nav { position: sticky; bottom: 0; z-index: 20; }
+.bottom-nav-item.active { text-shadow: 0 0 14px rgba(125, 227, 255, 0.7); }
+
+/* Pantallas encima del juego: vidrio oscuro */
+.game-overlay,
+.eco-moment {
+  background: rgba(10, 10, 18, 0.78);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+.level-banner {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(179, 157, 255, 0.35);
+}
+
+/* ---------- Brillos y movimiento ---------- */
+.challenge-card {
+  box-shadow: var(--glass-shadow), 0 0 40px rgba(125, 227, 255, 0.1);
+}
+.challenge-card,
+.game-card,
+.demo-chip,
+.home-more {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.game-card:hover,
+.demo-chip:hover,
+.home-more:hover {
+  transform: translateY(-2px);
+  border-color: rgba(125, 227, 255, 0.45);
+  box-shadow: var(--glass-shadow), 0 0 24px rgba(125, 227, 255, 0.18);
+}
+
+/* Botón principal con brillo que lo recorre */
+.btn-primary,
+.challenge-card-button {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(125, 227, 255, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.btn-primary::after,
+.challenge-card-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg);
+  animation: shine 3.6s ease-in-out infinite;
+}
+@keyframes shine {
+  0%, 55% { left: -60%; }
+  100% { left: 130%; }
+}
+.btn-primary { display: block; text-align: center; text-decoration: none; }
+
+/* Logo que respira */
+.welcome-logo { animation: logo-breathe 4s ease-in-out infinite; }
+@keyframes logo-breathe {
+  0%, 100% { filter: drop-shadow(0 0 18px rgba(125, 227, 255, 0.22)); }
+  50% { filter: drop-shadow(0 0 34px rgba(179, 157, 255, 0.5)); }
+}
+
+/* Entrada suave de cada pantalla */
+.main,
+.main-content,
+.welcome-content,
+.results-title,
+.outcome {
+  animation: page-in 0.35s ease-out both;
+}
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Número de racha con llama */
+.streak-banner-number {
+  background: linear-gradient(180deg, #fff, var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 14px rgba(179, 157, 255, 0.5));
+}
+
+/* Pulso de Reflejos dentro del marco común (Eco) */
+.arena-pulse-mini {
+  animation: mini-approach linear forwards;
+}
+@keyframes mini-approach {
+  from { transform: scale(1.4); opacity: 0.25; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ---------- Resultado: victoria / derrota ---------- */
+.outcome {
+  text-align: center;
+  padding: 22px 18px;
+  border-radius: 20px;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.outcome-win {
+  border-color: rgba(125, 227, 255, 0.5);
+  box-shadow: var(--glass-shadow), 0 0 44px rgba(125, 227, 255, 0.22);
+}
+.outcome-lose {
+  border-color: rgba(255, 107, 129, 0.4);
+  box-shadow: var(--glass-shadow), 0 0 40px rgba(255, 107, 129, 0.12);
+}
+.outcome-emoji { font-size: 44px; line-height: 1; }
+.outcome-title {
+  margin-top: 8px;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+.outcome-win .outcome-title {
+  background: linear-gradient(90deg, var(--violet), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.outcome-lose .outcome-title { color: var(--danger); }
+.outcome-text {
+  margin-top: 8px;
+  color: #d8d8e6;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.outcome-game {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+.goal-bar {
+  height: 8px;
+  margin: 14px 8px 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+.goal-bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--violet), var(--cyan));
+  box-shadow: 0 0 12px rgba(125, 227, 255, 0.6);
+  transition: width 0.8s ease-out;
+}
+.goal-bar-text {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+.eco-result {
+  text-align: center;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 14px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+.eco-result-closed { color: #ffd84d; border-color: rgba(255, 216, 77, 0.5); }
+.eco-result-lost { color: var(--muted); }
+.results-retry { margin-bottom: 4px; }
+
+/* Confeti */
+.confetti {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 30;
+}
+.confetti i {
+  position: absolute;
+  top: -20px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: confetti-fall linear forwards;
+}
+@keyframes confetti-fall {
+  0% { opacity: 1; transform: translateY(0) rotate(0); }
+  100% { opacity: 0; transform: translateY(105vh) rotate(var(--spin)); }
+}
+
+/* ---------- El Eco dentro de la partida ---------- */
+.eco-moment {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 90px 16px 24px;
+  border: 1px solid rgba(255, 216, 77, 0.4);
+  box-shadow: inset 0 0 80px rgba(255, 216, 77, 0.1);
+}
+.eco-moment .timebar { max-width: 380px; }
+.eco-moment .timebar-fill { background: linear-gradient(90deg, #ffd84d, #ff9a3d); }
+.eco-intro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding-bottom: 80px;
+  animation: page-in 0.4s ease-out both;
+}
+.eco-spark { font-size: 54px; animation: spark 1.6s ease-in-out infinite; }
+@keyframes spark {
+  0%, 100% { transform: scale(1) rotate(0); filter: drop-shadow(0 0 10px rgba(255, 216, 77, 0.5)); }
+  50% { transform: scale(1.15) rotate(8deg); filter: drop-shadow(0 0 24px rgba(255, 216, 77, 0.9)); }
+}
+.eco-title {
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #ffd84d;
+}
+.eco-game { font-size: 20px; font-weight: 800; }
+.eco-text {
+  max-width: 300px;
+  color: #d8d8e6;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.eco-head {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.eco-head-name { font-weight: 800; color: #ffd84d; font-size: 14px; letter-spacing: 0.5px; }
+.eco-dots { display: flex; gap: 6px; }
+.eco-dots i {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 216, 77, 0.6);
+}
+.eco-dots i.eco-dot-on {
+  background: #ffd84d;
+  box-shadow: 0 0 12px #ffd84d;
+}
+.eco-play {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.howto-goal {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--cyan);
+}
+.howto-eco {
+  font-size: 13px;
+  line-height: 1.45;
+  color: #ffd84d;
+  max-width: 320px;
+}
+.eco-card-link .eco-card-label { color: #ffd84d; }
+.challenge-card-goal {
+  color: var(--cyan);
+  font-size: 13px;
+  font-weight: 700;
+  margin: -6px 0 16px;
+}

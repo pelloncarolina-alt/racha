@@ -9,6 +9,7 @@ export default function usePulseGame({ onFinish }) {
   const [phase, setPhase] = useState('intro') // intro | countdown | playing | finished
   const [count, setCount] = useState(3)
   const [timeLeft, setTimeLeft] = useState(GAME_SECONDS)
+  const [level, setLevel] = useState(1)
   const [hud, setHud] = useState({ score: 0, combo: 0, multiplier: 1 })
   const [feedback, setFeedback] = useState(null)
 
@@ -31,6 +32,7 @@ export default function usePulseGame({ onFinish }) {
         phase: setPhase,
         count: setCount,
         time: setTimeLeft,
+        level: setLevel,
         score: setHud,
         feedback: setFeedback,
         pulse: ({ visible, scale, opacity }) => {
@@ -53,6 +55,7 @@ export default function usePulseGame({ onFinish }) {
   const start = useCallback(() => engineRef.current?.start(), [])
   const tap = useCallback(() => engineRef.current?.tap(), [])
   const quit = useCallback(() => engineRef.current?.stop(), [])
+  const bonus = useCallback((points) => engineRef.current?.addBonus(points), [])
 
-  return { phase, count, timeLeft, hud, feedback, pulseRef, start, tap, quit }
+  return { phase, count, timeLeft, level, hud, feedback, pulseRef, start, tap, quit, bonus }
 }

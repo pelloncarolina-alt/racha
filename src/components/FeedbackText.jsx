@@ -12,7 +12,7 @@ function FeedbackText({ feedback }) {
     <div className="feedback-slot">
       {feedback && (
         <p key={feedback.key} className={`feedback feedback-${feedback.grade}`}>
-          {LABELS[feedback.grade]}
+          {feedback.label ?? LABELS[feedback.grade]}
           {feedback.points > 0 && <span className="feedback-points"> +{feedback.points}</span>}
         </p>
       )}

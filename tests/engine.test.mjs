@@ -168,4 +168,30 @@ for (const seed of [11, 22, 33, 44, 55]) {
   assert.equal(w.events.finish.length, 1)
   assert.ok(r.score > 0)
 }
+// 9) Dificultad por nivel: los pulsos tardan menos en llegar al aro a medida que se sube
+{
+  const byLevel = {}
+  const w = runGame((w) => {
+    const st = w.engine.getState()
+    if (st.pulseTarget === null) return
+    const d = st.pulseTarget - st.pulseSpawnAt
+    byLevel[st.level] = byLevel[st.level] ? Math.min(byLevel[st.level], d) : d
+    if (w.now() >= st.pulseTarget) w.engine.tap()
+  }, 12)
+  const levels = Object.keys(byLevel).map(Number).sort()
+  assert.deepEqual(levels, [1, 2, 3, 4, 5], 'la partida pasa por los 5 niveles')
+  for (let l = 2; l <= 5; l++) assert.ok(byLevel[l] < byLevel[l - 1], `el nivel ${l} es más rápido que el ${l - 1}`)
+  assert.equal(w.events.finish[0].level, 5)
+  console.log('  duración del pulso por nivel (ms):', levels.map((l) => byLevel[l]).join(' > '))
+}
 console.log('OK: el motor del juego pasa todas las pruebas')
+
+// 10) Bonus (Eco cerrado antes de empezar): suma puntos y se refleja en el resultado
+{
+  let given = false
+  const w = runGame((w) => {
+    if (!given) { given = true; w.engine.addBonus(500) }
+  }, 12)
+  assert.equal(w.events.finish[0].score, 500)
+  console.log('OK: bonus de Eco en Reflejos')
+}

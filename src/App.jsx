@@ -1,22 +1,28 @@
 import { useState } from 'react'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import AppLayout from './components/AppLayout'
+import { getGame } from './game/catalog'
+import { outcomeOf } from './game/messages'
 import RequireUser from './components/RequireUser'
-import WelcomeScreen from './screens/WelcomeScreen'
-import RegisterScreen from './screens/RegisterScreen'
-import HomeScreen from './screens/HomeScreen'
-import FriendsScreen from './screens/FriendsScreen'
-import ProfileScreen from './screens/ProfileScreen'
-import GameScreen from './screens/GameScreen'
-import ResultsScreen from './screens/ResultsScreen'
+import WelcomeScreen from './pages/WelcomeScreen'
+import RegisterScreen from './pages/RegisterScreen'
+import HomeScreen from './pages/HomeScreen'
+import FriendsScreen from './pages/FriendsScreen'
+import ProfileScreen from './pages/ProfileScreen'
+import GamePage from './pages/GamePage'
+import GamesPage from './pages/GamesPage'
+import ResultsScreen from './pages/ResultsScreen'
 import {
   loadUser,
   saveUser,
   clearUser,
   createUser,
   registerResult,
+  registerPractice,
 } from './utils/storage'
 import './App.css'
+import './games/games.css'
+import './glass.css'
 
 function App() {
   const navigate = useNavigate()
@@ -43,12 +49,19 @@ function App() {
     navigate('/')
   }
 
-  function handleFinish(gameResult) {
-    const isNewBest = gameResult.score > user.bestScore
-    const updated = registerResult(user, gameResult.score)
+  // Termina una partida.
+  //  - Desafío del día GANADO (llegó a la meta): suma un día de racha.
+  //  - Desafío del día perdido o práctica: no suma racha, pero guarda el récord.
+  function handleFinish(gameResult, gameId, mode) {
+    const isNewBest = gameResult.score > (user.bests[gameId] || 0)
+    const outcome = outcomeOf(gameResult, getGame(gameId), mode)
+    let updated = outcome.streakCounts
+      ? registerResult(user, gameResult.score, gameId)
+      : registerPractice(user, gameId, gameResult.score)
+    if (gameResult.eco === 'closed') updated = { ...updated, ecos: (updated.ecos || 0) + 1 }
     saveUser(updated)
     setUser(updated)
-    setResult({ ...gameResult, isNewBest })
+    setResult({ ...gameResult, gameId, mode, isNewBest })
     navigate('/resultados')
   }
 
@@ -74,7 +87,15 @@ function App() {
         path="/juego"
         element={
           <RequireUser user={user}>
-            <GameScreen onQuit={() => navigate('/inicio')} onFinish={handleFinish} />
+            <GamePage daily onQuit={() => navigate('/inicio')} onFinish={handleFinish} />
+          </RequireUser>
+        }
+      />
+      <Route
+        path="/jugar/:gameId"
+        element={
+          <RequireUser user={user}>
+            <GamePage onQuit={() => navigate('/juegos')} onFinish={handleFinish} />
           </RequireUser>
         }
       />
@@ -88,6 +109,7 @@ function App() {
         }
       >
         <Route path="/inicio" element={<HomeScreen user={user} onPlay={() => navigate('/juego')} />} />
+        <Route path="/juegos" element={<GamesPage user={user} />} />
         <Route path="/amigos" element={<FriendsScreen />} />
         <Route path="/perfil" element={<ProfileScreen user={user} onLogout={handleLogout} />} />
       </Route>

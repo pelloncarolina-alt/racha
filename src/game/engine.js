@@ -2,11 +2,10 @@ import {
   GAME_SECONDS,
   START_SCALE,
   GOOD_MS,
-  GAP_MIN_MS,
-  GAP_MAX_MS,
   STRAY_GRACE_MS,
 } from './config.js'
-import { gradeTap, multiplierFor, pointsFor, approachMs } from './scoring.js'
+import { gradeTap, multiplierFor, pointsFor, approachMs, gapRange } from './scoring.js'
+import { levelAt } from './levels.js'
 
 const COUNTDOWN_FROM = 3
 const COUNTDOWN_STEP_MS = 800
@@ -31,6 +30,7 @@ export function createEngine({
     phase: noop, // 'intro' | 'countdown' | 'playing' | 'finished'
     count: noop, // 3, 2, 1
     time: noop, // segundos restantes
+    level: noop, // nivel actual (1 a 5)
     score: noop, // { score, combo, multiplier }
     pulse: noop, // { visible, scale, opacity }
     feedback: noop, // { grade, points, multiplier, key }
@@ -49,6 +49,8 @@ export function createEngine({
   let combo = 0
   let bestCombo = 0
   let lastSecond = GAME_SECONDS
+  let level = 1
+  let maxLevel = 1
   let rafId = null
   let timerId = null
   let feedbackKey = 0
@@ -81,6 +83,7 @@ export function createEngine({
     nextSpawnAt = startTime + FIRST_PULSE_DELAY_MS
     setPhase('playing')
     cb.time(GAME_SECONDS)
+    cb.level(1)
     rafId = raf(loop)
   }
 
@@ -108,7 +111,8 @@ export function createEngine({
 
     pulse = null
     lastResolveAt = t
-    nextSpawnAt = t + GAP_MIN_MS + random() * (GAP_MAX_MS - GAP_MIN_MS)
+    const gap = gapRange(level)
+    nextSpawnAt = t + gap.min + random() * (gap.max - gap.min)
     cb.pulse({ visible: false })
     cb.score({ score, combo, multiplier: multiplierFor(combo) })
     emitFeedback(grade, points, multiplier)
@@ -124,6 +128,13 @@ export function createEngine({
       return
     }
 
+    const nowLevel = levelAt(elapsed, endAfterMs)
+    if (nowLevel !== level) {
+      level = nowLevel
+      maxLevel = Math.max(maxLevel, level)
+      cb.level(level)
+    }
+
     const remaining = Math.ceil((endAfterMs - elapsed) / 1000)
     if (remaining !== lastSecond) {
       lastSecond = remaining
@@ -132,7 +143,7 @@ export function createEngine({
 
     // Nace un pulso nuevo (solo si alcanza a llegar al aro antes de que termine la partida)
     if (!pulse && t >= nextSpawnAt) {
-      const duration = approachMs(elapsed)
+      const duration = approachMs(level)
       if (t + duration <= startTime + endAfterMs) {
         pulse = { spawnAt: t, duration }
       } else {
@@ -190,9 +201,18 @@ export function createEngine({
       bestCombo,
       stats: { ...stats },
       hits,
+      misses: stats.pulses - hits,
+      level: maxLevel,
       pulses: stats.pulses,
       accuracy: stats.pulses ? Math.round((hits / stats.pulses) * 100) : 0,
     })
+  }
+
+  // Puntos extra (por ejemplo, cerrar el Eco antes de empezar)
+  function addBonus(points) {
+    if (phase === 'finished' || phase === 'stopped') return
+    score += points
+    cb.score({ score, combo, multiplier: multiplierFor(combo) })
   }
 
   // Corta todo sin dar resultado (al salir del juego o desmontar la pantalla)
@@ -211,10 +231,11 @@ export function createEngine({
       combo,
       bestCombo,
       stats: { ...stats },
+      level,
       pulseTarget: pulse ? pulse.spawnAt + pulse.duration : null,
       pulseSpawnAt: pulse ? pulse.spawnAt : null,
     }
   }
 
-  return { start, tap, stop, getState }
+  return { start, tap, stop, addBonus, getState }
 }

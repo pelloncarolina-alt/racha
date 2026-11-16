@@ -1,6 +1,7 @@
 import ProfileHeader from '../components/ProfileHeader'
 import ActivityGrid from '../components/ActivityGrid'
 import { daysAgoKey } from '../utils/dates'
+import { GAMES } from '../game/catalog'
 
 const DAYS_SHOWN = 28
 
@@ -32,6 +33,22 @@ function ProfileScreen({ user, onLogout }) {
 
       <h3 className="screen-subtitle">ACTIVIDAD (ÚLTIMOS {DAYS_SHOWN} DÍAS)</h3>
       <ActivityGrid days={days} />
+
+      <h3 className="screen-subtitle">RÉCORDS POR JUEGO</h3>
+      <ul className="records">
+        <li className="records-item">
+          <span>✨ Ecos cerrados</span>
+          <strong>{user.ecos || 0}</strong>
+        </li>
+        {GAMES.map((game) => (
+          <li key={game.id} className="records-item">
+            <span>
+              {game.icon} {game.short}
+            </span>
+            <strong>{user.bests[game.id] ? user.bests[game.id].toLocaleString('en-US') : '—'}</strong>
+          </li>
+        ))}
+      </ul>
 
       <button className="btn-secondary" onClick={onLogout}>
         CERRAR SESIÓN

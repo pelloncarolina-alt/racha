@@ -43,6 +43,22 @@ Este registro resume los prompts que fui usando, en orden, qué produjo la IA y 
 |---|----------------------|---------------------|----------------|
 | 11 | Te paso la guía del Momento 2 para ver si el proyecto cumple. | Comparó el proyecto con la guía, detectó que faltaba **React Router**, migró la navegación a rutas (`/`, `/registro`, `/inicio`, `/juego`, `/resultados`, `/amigos`, `/perfil`) y preparó este registro. | — |
 
+## 6. Momento 3 — Más juegos y dificultad por niveles
+
+| # | Mi prompt (resumido) | Qué respondió la IA | Qué decidí yo |
+|---|----------------------|---------------------|----------------|
+| 12 | Te paso las clases 5, 6 y la del agente Cursor para ver qué aplicar. | Resumió las convenciones (carpeta `pages/`, `Link` para navegar, commits frecuentes, poder explicar el código generado) y las fechas de entrega. | Elegí aplicar todo lo que correspondiera al proyecto. |
+| 13 | Hay que agregar unos 10 juegos más, algunos interactivos de cultura general. El profe pidió que suba la dificultad con los niveles; por ejemplo, que en el de TAP vaya más rápido con el tiempo. Que todos sigan esa misma lógica. | Propuso una **regla común de niveles** (5 niveles por partida, cada uno más difícil) y la aplicó a Reflejos. Armó 10 juegos nuevos: Puntería, Topos, Colores, Cuentas, Orden, Secuencia, Memotest, Cultura general, Capitales y Verdadero o falso. Cada uno endurece algo distinto con el nivel. | Definí qué quería (cantidad, cultura general, dificultad creciente con la misma lógica). Los juegos concretos los propuso la IA y los reviso yo. |
+| 14 | (continuación) | Agregó el desafío del día rotativo, la lista de desafíos, la práctica libre (sin sumar racha), récords por juego y una tabla de dificultad (`docs/DIFICULTAD.md`). Probó los 11 juegos con bots en un navegador real y escribió pruebas automáticas. | Revisar y probar cada juego yo misma antes de la entrega. |
+
+## 7. Momento 3 — Entrega final
+
+| # | Mi prompt (resumido) | Qué respondió la IA | Qué decidí yo |
+|---|----------------------|---------------------|----------------|
+| 15 | No veía los juegos nuevos y quiero mostrarle todo al profe sin esperar 11 días. | Agregó un **modo demo** en Inicio: los 11 juegos a mano y un botón para pasar al día siguiente. | Elegí mostrarlo así en la presentación. |
+| 16 | Te paso las consignas del Momento 3 para terminar el juego. | Las comparó con el proyecto. Agregó el **Eco dentro de la partida** (aparece de sorpresa y da +500), **metas con victoria y derrota** (solo ganar suma racha), mensajes propios del juego y el diseño con glassmorfismo y efectos. | Definí cómo funciona el Eco (fragmento del desafío de ayer) y revisé el resultado. |
+| 17 | (continuación) | Armó el README final, la plantilla de prueba de usabilidad y la guía para publicar en Vercel. | Hago yo la prueba con una persona externa, publico en Vercel y subo a Instagram. |
+
 ---
 
 ## Cómo se organizó el trabajo con la IA

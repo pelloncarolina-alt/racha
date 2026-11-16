@@ -11,16 +11,16 @@ export const GOOD_MS = 230
 // Puntos base por precisión
 export const POINTS = { perfect: 100, great: 60, good: 30 }
 
-// Tiempo que tarda el pulso en llegar al aro (se acelera durante la partida)
-export const APPROACH_START_MS = 1500
-export const APPROACH_END_MS = 850
+// Tiempo que tarda el pulso en llegar al aro: en el nivel 1 es lento, en el nivel 5 es muy rápido
+export const APPROACH_EASY_MS = 1500
+export const APPROACH_HARD_MS = 720
 
 // Toques accidentales justo después de resolver un pulso (doble toque) se ignoran
 export const STRAY_GRACE_MS = 150
 
-// Pausa entre un pulso y el siguiente
-export const GAP_MIN_MS = 350
-export const GAP_MAX_MS = 800
+// Pausa entre un pulso y el siguiente (también se achica con los niveles)
+export const GAP_EASY_MS = { min: 350, max: 800 }
+export const GAP_HARD_MS = { min: 160, max: 380 }
 
 // Combo: cada 5 aciertos seguidos sube el multiplicador (máximo x3)
 export const COMBO_STEP = 5
