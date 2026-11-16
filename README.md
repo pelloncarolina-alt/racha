@@ -5,7 +5,7 @@
 Proyecto Integrador — *Contenidos y Creatividad III* (Lic. en Comunicación Digital, Universidad de Palermo).
 Videojuego web hecho con React y programado con asistencia de un agente de IA.
 
-- **Juego online:** _(completar con el link de Vercel)_
+- **Juego online:** https://racha-ebon.vercel.app
 - **Repositorio:** https://github.com/pelloncarolina-alt/racha
 
 ## La idea
